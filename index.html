@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degustazione Saison Oltrepò Pavese</title>
+    <style>
+        :root {
+            --primary: #c47116;
+            --primary-dark: #9d5409;
+            --primary-light: #fff8f0;
+            --accent: #2d6a4f;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --border-focus: #f59e0b;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --thumb-size: 22px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px 10px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Contenitore più largo per evitare sovrapposizioni nelle etichette */
+        .container {
+            max-width: 780px;
+            background: var(--surface);
+            margin: 0 auto;
+            padding: 20px 12px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        /* Loghi ingranditi all'80% della larghezza */
+        .logos-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 28px;
+        }
+
+        .logos-container {
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo-item {
+            flex: 1;
+            aspect-ratio: 1 / 1;
+            max-height: 140px;
+            background: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 10px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+        }
+
+        h1 {
+            font-size: 1.65rem;
+            color: var(--text-main);
+            text-align: center;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .intro {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 28px;
+            line-height: 1.55;
+            background: var(--primary-light);
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid #fed7aa;
+        }
+
+        .card-highlight {
+            background: #fffdfa;
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid #fde68a;
+            margin-bottom: 22px;
+        }
+
+        .section {
+            background: var(--surface);
+            margin-bottom: 22px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section:focus-within {
+            border-color: #cbd5e1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+        }
+
+        .subsection-block {
+            padding: 14px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .subsection-block:last-child {
+            border-bottom: none;
+            padding-bottom: 4px;
+        }
+
+        .subsection-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label.question {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 0.98rem;
+            color: var(--text-main);
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background: #fdfdfd;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(196, 113, 22, 0.15);
+        }
+
+        /* Slider moderni */
+        .slider-box {
+            margin-bottom: 20px;
+        }
+
+        .slider-box:last-child {
+            margin-bottom: 4px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .slider-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .slider-badge {
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 3px 9px;
+            border-radius: 20px;
+            border: 1px solid #fbd38d;
+            text-transform: capitalize;
+        }
+
+        .slider-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            outline: none;
+            margin: 10px 0 8px 0;
+            cursor: pointer;
+            display: block;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: var(--thumb-size);
+            height: var(--thumb-size);
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: var(--thumb-size);
+            height: var(--thumb-size);
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]:active::-webkit-slider-thumb {
+            transform: scale(1.15);
+            background: var(--primary-dark);
+        }
+
+        /* Contenitore etichette per allineamento preciso con il thumb */
+        .slider-ticks-container {
+            position: relative;
+            width: 100%;
+            height: 20px;
+        }
+
+        .slider-ticks-track {
+            position: absolute;
+            left: calc(var(--thumb-size) / 2);
+            right: calc(var(--thumb-size) / 2);
+            top: 0;
+            bottom: 0;
+        }
+
+        .slider-tick {
+            position: absolute;
+            transform: translateX(-50%);
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            user-select: none;
+            text-transform: capitalize;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .radio-group label {
+            background: #f8fafc;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s, border-color 0.2s;
+            user-select: none;
+        }
+
+        .radio-group label:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        button[type="submit"] {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 15px 24px;
+            font-size: 1.02rem;
+            width: 100%;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(196, 113, 22, 0.25);
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--primary-dark);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(1px);
+        }
+
+        button[type="submit"]:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .success-msg {
+            display: none;
+            background-color: #f0fdf4;
+            color: #166534;
+            padding: 24px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid #bbf7d0;
+            margin-top: 20px;
+        }
+
+        #duplicateModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(3px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 26px;
+            border-radius: var(--radius-md);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logos-wrapper">
+        <div class="logos-container">
+            <div class="logo-item">
+                <img src="hbl.png" alt="Logo HBL" onerror="this.parentElement.style.display='none'">
+            </div>
+            <div class="logo-item">
+                <img src="doppiobaffo.png" alt="Logo Doppiobaffo" onerror="this.parentElement.style.display='none'">
+            </div>
+            <div class="logo-item">
+                <img src="ubt.png" alt="Logo UBT" onerror="this.parentElement.style.display='none'">
+            </div>
+        </div>
+    </div>
+
+    <h1>Saison Oltrepò Pavese</h1>
+    <div class="intro">
+        Prototipo in collaborazione con l'Università degli Studi di Pavia (con cereali del territorio e bargnolino). Valuta il prodotto secondo le tue preferenze.
+    </div>
+
+    <form id="degustazioneForm">
+        
+        <div class="card-highlight">
+            <label class="question" for="versione_birra">Seleziona la versione che stai assaggiando*</label>
+            <select id="versione_birra" required onchange="controllaDuplicato()">
+                <option value="">-- Scegli la versione --</option>
+                <option value="Versione A">Versione A</option>
+                <option value="Versione B">Versione B</option>
+                <option value="Versione C">Versione C</option>
+                <option value="Versione D">Versione D</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <label class="question" for="nome">Nome Assaggiatore*</label>
+            <input type="text" id="nome" placeholder="Il tuo nome o nickname" required onblur="controllaDuplicato()">
+        </div>
+
+        <!-- MACROAREA 1: Esame Visivo -->
+        <div class="section">
+            <h2 class="section-title">Esame Visivo</h2>
+            
+            <!-- 1. Quantità Schiuma -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Quantità Schiuma</span>
+                    <span class="slider-badge" id="badge_schiuma">Scarsa</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="visivo_schiuma" min="0" max="3" step="1" value="1" oninput="aggiornaSliderVisivo('schiuma')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">Assente</span>
+                        <span class="slider-tick" style="left: 33.333%;">Scarsa</span>
+                        <span class="slider-tick" style="left: 66.666%;">Media</span>
+                        <span class="slider-tick" style="left: 100%;">Abbondante</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Persistenza Schiuma -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Persistenza Schiuma</span>
+                    <span class="slider-badge" id="badge_persistenza">Breve</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="visivo_persistenza" min="0" max="3" step="1" value="1" oninput="aggiornaSliderVisivo('persistenza')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">Evanescente</span>
+                        <span class="slider-tick" style="left: 33.333%;">Breve</span>
+                        <span class="slider-tick" style="left: 66.666%;">Media</span>
+                        <span class="slider-tick" style="left: 100%;">Lunga</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Limpidezza -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Limpidezza</span>
+                    <span class="slider-badge" id="badge_limpidezza">Leggermente velata</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="visivo_limpidezza" min="0" max="3" step="1" value="1" oninput="aggiornaSliderVisivo('limpidezza')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">Limpida</span>
+                        <span class="slider-tick" style="left: 33.333%;">Leggerm. velata</span>
+                        <span class="slider-tick" style="left: 66.666%;">Velata</span>
+                        <span class="slider-tick" style="left: 100%;">Torbida</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Aspetto (Gradimento rosato) -->
+            <div class="slider-box" style="margin-top: 22px; border-top: 1px dashed var(--border); padding-top: 18px;">
+                <div class="slider-header">
+                    <span class="slider-title">Gradimento aspetto generale</span>
+                    <span class="slider-badge" id="badge_aspetto_rosato">2 / 5</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="aspetto_rosato_voto" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('aspetto_rosato')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                        <span class="slider-tick" style="left: 25%;">2</span>
+                        <span class="slider-tick" style="left: 50%;">3</span>
+                        <span class="slider-tick" style="left: 75%;">4</span>
+                        <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MACROAREA 2: Esame Olfattivo (Aroma) -->
+        <div class="section">
+            <h2 class="section-title">Aroma</h2>
+
+            <!-- A. Malto -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">1. Malto</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_aroma_malto_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="aroma_malto_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('aroma_malto')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_aroma_malto_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="aroma_malto_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('aroma_malto_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B. Fermentazione -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">2. Fermentazione (caratteristiche derivanti da lievito e batteri)</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_aroma_fermentazione_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="aroma_fermentazione_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('aroma_fermentazione')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_aroma_fermentazione_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="aroma_fermentazione_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('aroma_fermentazione_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- C. Bargnolino -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">3. Bargnolino</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_aroma_bargnolino_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="aroma_bargnolino_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('aroma_bargnolino')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_aroma_bargnolino_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="aroma_bargnolino_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('aroma_bargnolino_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MACROAREA 3: Gusto -->
+        <div class="section">
+            <h2 class="section-title">Gusto</h2>
+
+            <!-- A. Malto -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">1. Malto</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_gusto_malto_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_malto_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('gusto_malto')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_gusto_malto_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_malto_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('gusto_malto_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B. Fermentazione -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">2. Fermentazione (caratteristiche derivanti da lievito e batteri)</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_gusto_fermentazione_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_fermentazione_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('gusto_fermentazione')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_gusto_fermentazione_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_fermentazione_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('gusto_fermentazione_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- C. Bargnolino -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">3. Bargnolino</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_gusto_bargnolino_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_bargnolino_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('gusto_bargnolino')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_gusto_bargnolino_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_bargnolino_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('gusto_bargnolino_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- D. Retrogusto -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">4. Retrogusto</h3>
+                
+                <!-- Intensità -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Intensità</span>
+                        <span class="slider-badge" id="badge_gusto_retrogusto_int">Medio-bassa</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_retrogusto_int" min="0" max="4" step="1" value="1" oninput="aggiornaSliderIntensita('gusto_retrogusto')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Bassa</span>
+                            <span class="slider-tick" style="left: 25%;">Medio-bassa</span>
+                            <span class="slider-tick" style="left: 50%;">Media</span>
+                            <span class="slider-tick" style="left: 75%;">Medio-alta</span>
+                            <span class="slider-tick" style="left: 100%;">Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piacevolezza -->
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Piacevolezza</span>
+                        <span class="slider-badge" id="badge_gusto_retrogusto_piac">2 / 5</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_retrogusto_piac" min="1" max="5" step="1" value="2" oninput="aggiornaSliderVoto('gusto_retrogusto_piac')">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">1 (Poco)</span>
+                            <span class="slider-tick" style="left: 25%;">2</span>
+                            <span class="slider-tick" style="left: 50%;">3</span>
+                            <span class="slider-tick" style="left: 75%;">4</span>
+                            <span class="slider-tick" style="left: 100%;">5 (Molto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E. Bilanciamento -->
+            <div class="subsection-block">
+                <h3 class="subsection-title">5. Bilanciamento</h3>
+                <div class="slider-box">
+                    <div class="slider-header">
+                        <span class="slider-title">Profilo</span>
+                        <span class="slider-badge" id="badge_bilanciamento">Equilibrata</span>
+                    </div>
+                    <div class="slider-input-wrapper">
+                        <input type="range" id="gusto_bilanciamento" min="0" max="4" step="1" value="2" oninput="aggiornaSliderBilanciamento()">
+                    </div>
+                    <div class="slider-ticks-container">
+                        <div class="slider-ticks-track">
+                            <span class="slider-tick" style="left: 0%;">Dolce</span>
+                            <span class="slider-tick" style="left: 25%;">Legg. dolce</span>
+                            <span class="slider-tick" style="left: 50%;">Equilibrata</span>
+                            <span class="slider-tick" style="left: 75%;">Legg. amara</span>
+                            <span class="slider-tick" style="left: 100%;">Amara</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MACROAREA 4: Sensazioni Boccali -->
+        <div class="section">
+            <h2 class="section-title">Sensazioni Boccali</h2>
+
+            <!-- 1. Corpo -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Corpo</span>
+                    <span class="slider-badge" id="badge_bocca_corpo">Medio</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="bocca_corpo" min="0" max="2" step="1" value="1" oninput="aggiornaSliderBoccali('corpo')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">Esile</span>
+                        <span class="slider-tick" style="left: 50%;">Medio</span>
+                        <span class="slider-tick" style="left: 100%;">Pieno</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Carbonazione -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Carbonazione</span>
+                    <span class="slider-badge" id="badge_bocca_carbonazione">Media</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="bocca_carbonazione" min="0" max="2" step="1" value="1" oninput="aggiornaSliderBoccali('carbonazione')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">Bassa</span>
+                        <span class="slider-tick" style="left: 50%;">Media</span>
+                        <span class="slider-tick" style="left: 100%;">Alta</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Astringenza -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Astringenza</span>
+                    <span class="slider-badge" id="badge_bocca_astringenza">No</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="bocca_astringenza" min="0" max="2" step="1" value="0" oninput="aggiornaSliderBoccali('astringenza')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">No</span>
+                        <span class="slider-tick" style="left: 50%;">Leggera</span>
+                        <span class="slider-tick" style="left: 100%;">Fastidiosa</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Calore alcolico -->
+            <div class="slider-box">
+                <div class="slider-header">
+                    <span class="slider-title">Calore alcolico</span>
+                    <span class="slider-badge" id="badge_bocca_calore_alcolico">No</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="bocca_calore_alcolico" min="0" max="2" step="1" value="0" oninput="aggiornaSliderBoccali('calore_alcolico')">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">No</span>
+                        <span class="slider-tick" style="left: 50%;">Leggero</span>
+                        <span class="slider-tick" style="left: 100%;">Fastidioso</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MACROAREA 5: Valutazioni Finali -->
+        <div class="section">
+            <h2 class="section-title">Valutazioni Finali</h2>
+
+            <!-- Voto Finale da 1 a 10 -->
+            <div class="slider-box" style="margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px dashed var(--border);">
+                <div class="slider-header">
+                    <span class="slider-title" style="font-size: 0.98rem; font-weight: 700;">Dai un voto finale alla birra (1-10)</span>
+                    <span class="slider-badge" id="badge_voto_finale" style="font-size: 0.9rem; padding: 4px 12px; background: #fed7aa;">7 / 10</span>
+                </div>
+                <div class="slider-input-wrapper">
+                    <input type="range" id="voto_finale" min="1" max="10" step="1" value="7" oninput="aggiornaSliderVotoFinale()">
+                </div>
+                <div class="slider-ticks-container">
+                    <div class="slider-ticks-track">
+                        <span class="slider-tick" style="left: 0%;">1</span>
+                        <span class="slider-tick" style="left: 11.111%;">2</span>
+                        <span class="slider-tick" style="left: 22.222%;">3</span>
+                        <span class="slider-tick" style="left: 33.333%;">4</span>
+                        <span class="slider-tick" style="left: 44.444%;">5</span>
+                        <span class="slider-tick" style="left: 55.555%;">6</span>
+                        <span class="slider-tick" style="left: 66.666%;">7</span>
+                        <span class="slider-tick" style="left: 77.777%;">8</span>
+                        <span class="slider-tick" style="left: 88.888%;">9</span>
+                        <span class="slider-tick" style="left: 100%;">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <label class="question">Secondo te si sente chiaramente la caratterizzazione con il bargnolino?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="chiara_caratterizzazione_bargnolino" value="SI"> SI</label>
+                    <label><input type="radio" name="chiara_caratterizzazione_bargnolino" value="NO"> NO</label>
+                </div>
+            </div>
+
+            <div>
+                <label class="question">Secondo te si sente chiaramente la caratterizzazione data dalla fermentazione mista?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="chiara_caratterizzazione_fermentazione" value="SI"> SI</label>
+                    <label><input type="radio" name="chiara_caratterizzazione_fermentazione" value="NO"> NO</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <label class="question" for="note">Note / Consigli</label>
+            <textarea id="note" rows="3" placeholder="Eventuali commenti o osservazioni..."></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn">Invia Scheda di Degustazione</button>
+    </form>
+
+    <div id="successMessage" class="success-msg">
+        <h3 style="margin-top:0;">Scheda inviata con successo!</h3>
+        <p>Grazie per il tuo prezioso contributo alla valutazione. 🍻</p>
+        <button type="button" id="resetBtn" onclick="location.reload();" style="margin-top: 15px; background-color: #27ae60; width: auto; padding: 10px 20px;">Valuta un'altra birra</button>
+    </div>
+</div>
+
+<!-- Modale Duplicati -->
+<div id="duplicateModal">
+    <div class="modal-content">
+        <h3 style="color: #b91c1c; margin-top: 0;">Attenzione</h3>
+        <p id="modalText">Hai già inviato una valutazione per questa versione. Seleziona una versione differente o ricomincia.</p>
+        <div class="modal-buttons">
+            <button type="button" onclick="cambiaVariante()" style="background-color: #0284c7;">Cambia Versione</button>
+            <button type="button" onclick="chiudiModale()" style="background-color: #64748b;">Chiudi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxcU-8gAhV3O8b_2GJjqKbRJGcAT9VFV8qFH0uxtcrOdhBJzLav43npWbn1LzaPpQHd/exec";
+
+    const mappeValori = {
+        schiuma: ["assente", "scarsa", "media", "abbondante"],
+        persistenza: ["evanescente", "breve", "media", "lunga"],
+        limpidezza: ["limpida", "leggermente velata", "velata", "torbida"]
+    };
+
+    const livelliIntensita = ["bassa", "medio-bassa", "media", "medio-alta", "alta"];
+    const livelliBilanciamento = ["Dolce", "Leggermente dolce", "Equilibrata", "Leggermente amara", "Amara"];
+
+    const mappeBoccali = {
+        corpo: ["Esile", "Medio", "Pieno"],
+        carbonazione: ["Bassa", "Media", "Alta"],
+        astringenza: ["No", "Leggera", "Fastidiosa"],
+        calore_alcolico: ["No", "Leggero", "Fastidioso"]
+    };
+
+    function aggiornaSliderVisivo(tipo) {
+        const slider = document.getElementById(`visivo_${tipo}`);
+        const badge = document.getElementById(`badge_${tipo}`);
+        const valIndex = parseInt(slider.value, 10);
+        const testo = mappeValori[tipo][valIndex];
+        badge.textContent = testo.charAt(0).toUpperCase() + testo.slice(1);
+    }
+
+    function aggiornaSliderIntensita(prefix) {
+        const slider = document.getElementById(`${prefix}_int`);
+        const badge = document.getElementById(`badge_${prefix}_int`);
+        const valIndex = parseInt(slider.value, 10);
+        const testo = livelliIntensita[valIndex];
+        badge.textContent = testo.charAt(0).toUpperCase() + testo.slice(1);
+    }
+
+    function aggiornaSliderVoto(key) {
+        const slider = document.getElementById(key.endsWith('_voto') ? key : `${key}`);
+        const badgeId = key.startsWith('badge_') ? key : `badge_${key.replace('_voto', '')}`;
+        const badge = document.getElementById(badgeId);
+        if (badge) {
+            badge.textContent = `${slider.value} / 5`;
+        }
+    }
+
+    function aggiornaSliderVotoFinale() {
+        const slider = document.getElementById('voto_finale');
+        const badge = document.getElementById('badge_voto_finale');
+        badge.textContent = `${slider.value} / 10`;
+    }
+
+    function aggiornaSliderBilanciamento() {
+        const slider = document.getElementById('gusto_bilanciamento');
+        const badge = document.getElementById('badge_bilanciamento');
+        const valIndex = parseInt(slider.value, 10);
+        badge.textContent = livelliBilanciamento[valIndex];
+    }
+
+    function aggiornaSliderBoccali(chiave) {
+        const slider = document.getElementById(`bocca_${chiave}`);
+        const badge = document.getElementById(`badge_bocca_${chiave}`);
+        const valIndex = parseInt(slider.value, 10);
+        badge.textContent = mappeBoccali[chiave][valIndex];
+    }
+
+    function normalizzaNome(nome) {
+        return nome.trim().toLowerCase();
+    }
+
+    function controllaDuplicato() {
+        const nome = normalizzaNome(document.getElementById('nome').value);
+        const versione = document.getElementById('versione_birra').value;
+
+        if (!nome || !versione) return false;
+
+        const votiFatti = JSON.parse(localStorage.getItem('voti_degustazione_saison') || '{}');
+        if (votiFatti[nome] && votiFatti[nome].includes(versione)) {
+            document.getElementById('duplicateModal').style.display = 'flex';
+            return true;
+        }
+        return false;
+    }
+
+    function chiudiModale() {
+        document.getElementById('duplicateModal').style.display = 'none';
+    }
+
+    function cambiaVariante() {
+        chiudiModale();
+        document.getElementById('versione_birra').value = "";
+        document.getElementById('versione_birra').focus();
+    }
+
+    document.getElementById('degustazioneForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nomeRaw = document.getElementById('nome').value;
+        const nomeKey = normalizzaNome(nomeRaw);
+        const versione = document.getElementById('versione_birra').value;
+
+        if (!nomeKey) {
+            alert("Per favore, inserisci il tuo nome prima di inviare.");
+            document.getElementById('nome').focus();
+            return;
+        }
+
+        let votiFatti = JSON.parse(localStorage.getItem('voti_degustazione_saison') || '{}');
+        if (!votiFatti[nomeKey]) {
+            votiFatti[nomeKey] = [];
+        }
+
+        if (votiFatti[nomeKey].includes(versione)) {
+            document.getElementById('duplicateModal').style.display = 'flex';
+            return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = "Invio in corso...";
+
+        const getRadioVal = (name) => {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? el.value : "";
+        };
+
+        const schiIndex = parseInt(document.getElementById('visivo_schiuma').value, 10);
+        const persIndex = parseInt(document.getElementById('visivo_persistenza').value, 10);
+        const limpIndex = parseInt(document.getElementById('visivo_limpidezza').value, 10);
+
+        const dati = {
+            timestamp: new Date().toISOString(),
+            versione_birra: versione,
+            nome: nomeRaw.trim(),
+            
+            // Esame Visivo
+            visivo_schiuma: mappeValori.schiuma[schiIndex],
+            visivo_persistenza: mappeValori.persistenza[persIndex],
+            visivo_limpidezza: mappeValori.limpidezza[limpIndex],
+            aspetto_rosato_voto: document.getElementById('aspetto_rosato_voto').value,
+            
+            // Esame Olfattivo (Aroma)
+            aroma_malto_intensita: livelliIntensita[parseInt(document.getElementById('aroma_malto_int').value, 10)],
+            aroma_malto_piacevolezza: document.getElementById('aroma_malto_piac').value,
+            
+            aroma_fermentazione_intensita: livelliIntensita[parseInt(document.getElementById('aroma_fermentazione_int').value, 10)],
+            aroma_fermentazione_piacevolezza: document.getElementById('aroma_fermentazione_piac').value,
+            
+            aroma_bargnolino_intensita: livelliIntensita[parseInt(document.getElementById('aroma_bargnolino_int').value, 10)],
+            aroma_bargnolino_piacevolezza: document.getElementById('aroma_bargnolino_piac').value,
+
+            // Gusto
+            gusto_malto_intensita: livelliIntensita[parseInt(document.getElementById('gusto_malto_int').value, 10)],
+            gusto_malto_piacevolezza: document.getElementById('gusto_malto_piac').value,
+            
+            gusto_fermentazione_intensita: livelliIntensita[parseInt(document.getElementById('gusto_fermentazione_int').value, 10)],
+            gusto_fermentazione_piacevolezza: document.getElementById('gusto_fermentazione_piac').value,
+            
+            gusto_bargnolino_intensita: livelliIntensita[parseInt(document.getElementById('gusto_bargnolino_int').value, 10)],
+            gusto_bargnolino_piacevolezza: document.getElementById('gusto_bargnolino_piac').value,
+
+            gusto_retrogusto_intensita: livelliIntensita[parseInt(document.getElementById('gusto_retrogusto_int').value, 10)],
+            gusto_retrogusto_piacevolezza: document.getElementById('gusto_retrogusto_piac').value,
+
+            gusto_bilanciamento: livelliBilanciamento[parseInt(document.getElementById('gusto_bilanciamento').value, 10)],
+            
+            // Sensazioni Boccali
+            bocca_corpo: mappeBoccali.corpo[parseInt(document.getElementById('bocca_corpo').value, 10)],
+            bocca_carbonazione: mappeBoccali.carbonazione[parseInt(document.getElementById('bocca_carbonazione').value, 10)],
+            bocca_astringenza: mappeBoccali.astringenza[parseInt(document.getElementById('bocca_astringenza').value, 10)],
+            bocca_calore_alcolico: mappeBoccali.calore_alcolico[parseInt(document.getElementById('bocca_calore_alcolico').value, 10)],
+
+            // Valutazioni Finali
+            voto_finale: document.getElementById('voto_finale').value,
+            chiara_caratterizzazione_bargnolino: getRadioVal('chiara_caratterizzazione_bargnolino'),
+            chiara_caratterizzazione_fermentazione: getRadioVal('chiara_caratterizzazione_fermentazione'),
+            
+            note: document.getElementById('note').value
+        };
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            body: JSON.stringify(dati)
+        })
+        .then(response => response.text())
+        .then(data => {
+            votiFatti[nomeKey].push(versione);
+            localStorage.setItem('voti_degustazione_saison', JSON.stringify(votiFatti));
+
+            document.getElementById('degustazioneForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Errore durante l\'invio:', error);
+            alert("Si è verificato un errore durante l'invio dei dati. Riprova.");
+            btn.disabled = false;
+            btn.textContent = "Invia Scheda di Degustazione";
+        });
+    });
+</script>
+
+</body>
+</html>
