@@ -101,6 +101,7 @@
             text-align: center;
             margin-bottom: 28px;
             line-height: 1.55;
+            white-space: pre-line;
             background: var(--primary-light);
             padding: 14px 20px;
             border-radius: var(--radius-md);
@@ -405,7 +406,7 @@
 
 <div class="container">
     <div class="logos-wrapper">
-        <div class="logos-container">
+        <div class="logos-container" id="logos">
             <div class="logo-item">
                 <img src="hbl.png" alt="Logo HBL" onerror="this.parentElement.style.display='none'">
             </div>
@@ -418,8 +419,8 @@
         </div>
     </div>
 
-    <h1>Saison Oltrepò Pavese</h1>
-    <div class="intro">
+    <h1 id="titolo">Saison Oltrepò Pavese</h1>
+    <div class="intro" id="intro">
         Prototipo in collaborazione con l'Università degli Studi di Pavia (con cereali del territorio e bargnolino). Valuta il prodotto secondo le tue preferenze.
     </div>
 
@@ -1022,7 +1023,68 @@
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxcU-8gAhV3O8b_2GJjqKbRJGcAT9VFV8qFH0uxtcrOdhBJzLav43npWbn1LzaPpQHd/exec";
+    const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxcU-8gAhV3O8b_2GJjqKbRJGcAT9VFV8qFH0uxtcrOdhBJzLav43npWbn1LzaPpQHd/exec";
+
+    // Configurazione della serata passata nel link (?c=...), generata da settings.html.
+    // Senza parametro la pagina resta quella predefinita.
+    function leggiConfig() {
+        const c = new URLSearchParams(location.search).get('c');
+        if (!c) return {};
+        try {
+            const b64 = c.replace(/-/g, '+').replace(/_/g, '/');
+            const bytes = Uint8Array.from(atob(b64), ch => ch.charCodeAt(0));
+            const cfg = JSON.parse(new TextDecoder().decode(bytes));
+            return (cfg && typeof cfg === 'object') ? cfg : {};
+        } catch (err) {
+            console.error('Configurazione nel link non valida:', err);
+            return {};
+        }
+    }
+
+    const config = leggiConfig();
+    const urlValido = typeof config.u === 'string' && config.u.startsWith('https://script.google.com/');
+    const WEB_APP_URL = urlValido ? config.u : DEFAULT_WEB_APP_URL;
+    const SERATA = typeof config.s === 'string' ? config.s.trim() : '';
+    const CHIAVE_VOTI = SERATA ? `voti_degustazione_${SERATA.toLowerCase()}` : 'voti_degustazione_saison';
+
+    function applicaConfig() {
+        if (typeof config.t === 'string' && config.t.trim()) {
+            document.getElementById('titolo').textContent = config.t;
+            document.title = config.t;
+        }
+        if (typeof config.d === 'string') {
+            const intro = document.getElementById('intro');
+            intro.textContent = config.d;
+            intro.style.display = config.d.trim() ? '' : 'none';
+        }
+        if (Array.isArray(config.l)) {
+            const contenitore = document.getElementById('logos');
+            contenitore.innerHTML = '';
+            config.l.filter(src => typeof src === 'string' && !/^\s*(javascript|data):/i.test(src)).forEach(src => {
+                const item = document.createElement('div');
+                item.className = 'logo-item';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Logo';
+                img.onerror = () => { item.style.display = 'none'; };
+                item.appendChild(img);
+                contenitore.appendChild(item);
+            });
+            contenitore.parentElement.style.display = contenitore.children.length ? '' : 'none';
+        }
+        if (Array.isArray(config.v) && config.v.length) {
+            const select = document.getElementById('versione_birra');
+            select.innerHTML = '<option value="">-- Scegli la versione --</option>';
+            config.v.filter(v => typeof v === 'string' && v.trim()).forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v.trim();
+                opt.textContent = v.trim();
+                select.appendChild(opt);
+            });
+        }
+    }
+
+    applicaConfig();
 
     const mappeValori = {
         schiuma: ["assente", "scarsa", "media", "abbondante"],
@@ -1095,7 +1157,7 @@
 
         if (!nome || !versione) return false;
 
-        const votiFatti = JSON.parse(localStorage.getItem('voti_degustazione_saison') || '{}');
+        const votiFatti = JSON.parse(localStorage.getItem(CHIAVE_VOTI) || '{}');
         if (votiFatti[nome] && votiFatti[nome].includes(versione)) {
             document.getElementById('duplicateModal').style.display = 'flex';
             return true;
@@ -1126,7 +1188,7 @@
             return;
         }
 
-        let votiFatti = JSON.parse(localStorage.getItem('voti_degustazione_saison') || '{}');
+        let votiFatti = JSON.parse(localStorage.getItem(CHIAVE_VOTI) || '{}');
         if (!votiFatti[nomeKey]) {
             votiFatti[nomeKey] = [];
         }
@@ -1149,7 +1211,7 @@
         const persIndex = parseInt(document.getElementById('visivo_persistenza').value, 10);
         const limpIndex = parseInt(document.getElementById('visivo_limpidezza').value, 10);
 
-        const dati = {
+        let dati = {
             timestamp: new Date().toISOString(),
             versione_birra: versione,
             nome: nomeRaw.trim(),
@@ -1199,6 +1261,10 @@
             note: document.getElementById('note').value
         };
 
+        if (SERATA) {
+            dati = { serata: SERATA, ...dati };
+        }
+
         fetch(WEB_APP_URL, {
             method: 'POST',
             body: JSON.stringify(dati)
@@ -1206,7 +1272,7 @@
         .then(response => response.text())
         .then(data => {
             votiFatti[nomeKey].push(versione);
-            localStorage.setItem('voti_degustazione_saison', JSON.stringify(votiFatti));
+            localStorage.setItem(CHIAVE_VOTI, JSON.stringify(votiFatti));
 
             document.getElementById('degustazioneForm').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';

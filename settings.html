@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostazioni Degustazione</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #c47116;
+            --primary-dark: #9d5409;
+            --primary-light: #fff8f0;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px 10px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 780px;
+            background: var(--surface);
+            margin: 0 auto;
+            padding: 20px 16px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 0 0 6px 0;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 24px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 16px 0;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        label.question {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+
+        .helper-text {
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            display: block;
+        }
+
+        input[type="text"], input[type="url"], textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-main);
+            background: #fdfdfd;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(196, 113, 22, 0.15);
+        }
+
+        .logo-choices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .logo-choice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 110px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.82rem;
+            user-select: none;
+        }
+
+        .logo-choice:has(input:checked) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .logo-choice img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .logo-missing {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            border-radius: var(--radius-sm);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: var(--primary);
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        button.secondary {
+            background-color: #64748b;
+        }
+
+        button.secondary:hover {
+            background-color: #475569;
+        }
+
+        button.primary-wide {
+            width: 100%;
+            padding: 15px 24px;
+            font-size: 1.02rem;
+            box-shadow: 0 4px 12px rgba(196, 113, 22, 0.25);
+        }
+
+        #risultato {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .link-box {
+            word-break: break-all;
+            font-family: ui-monospace, Menlo, Consolas, monospace;
+            font-size: 0.8rem;
+            background: #f1f5f9;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+        }
+
+        .qr-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        #qrcode {
+            padding: 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        #qrcode img, #qrcode canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .qr-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .error {
+            color: #b91c1c;
+            font-size: 0.88rem;
+            margin-top: 8px;
+            display: none;
+        }
+
+        @media print {
+            body { background: #ffffff; padding: 0; }
+            .container { box-shadow: none; border: none; }
+            body * { visibility: hidden; }
+            .qr-wrapper, .qr-wrapper * { visibility: visible; }
+            .qr-wrapper { position: absolute; top: 40px; left: 0; right: 0; }
+            .qr-wrapper .buttons { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Impostazioni Serata</h1>
+    <div class="subtitle">Configura la scheda di degustazione e genera il link / QR code da dare agli assaggiatori.</div>
+
+    <form id="settingsForm">
+        <div class="section">
+            <h2 class="section-title">Serata</h2>
+            <div class="field">
+                <label class="question" for="serata">Nome della serata*</label>
+                <input type="text" id="serata" required maxlength="80" placeholder="Es. Saison Oltrepò - Ottobre 2026">
+                <span class="helper-text">Su Google Drive verrà creato automaticamente il file "Degustazione - [nome serata]" alla prima scheda ricevuta. Usa lo stesso nome per far confluire le schede nello stesso file.</span>
+            </div>
+            <div class="field">
+                <label class="question" for="titolo">Titolo della pagina</label>
+                <input type="text" id="titolo" placeholder="Es. Saison Oltrepò Pavese">
+            </div>
+            <div class="field">
+                <label class="question" for="descrizione">Descrizione della serata</label>
+                <textarea id="descrizione" rows="4" placeholder="Testo mostrato sotto il titolo (lascia vuoto per nasconderlo)"></textarea>
+            </div>
+            <div class="field">
+                <label class="question" for="versioni">Versioni in degustazione</label>
+                <textarea id="versioni" rows="4"></textarea>
+                <span class="helper-text">Una per riga: sono le voci del menu "Seleziona la versione".</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Loghi</h2>
+            <div class="logo-choices" id="logoChoices"></div>
+            <div class="field">
+                <label class="question" for="loghiExtra">Altri loghi (URL immagine)</label>
+                <textarea id="loghiExtra" rows="2" placeholder="https://esempio.it/logo.png"></textarea>
+                <span class="helper-text">Uno per riga. Puoi anche caricare un'immagine nel repository e indicarne il nome file (es. birrificio.png).</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Collegamento Google</h2>
+            <div class="field">
+                <label class="question" for="webAppUrl">URL Web App Apps Script*</label>
+                <input type="url" id="webAppUrl" required placeholder="https://script.google.com/macros/s/.../exec">
+                <span class="helper-text">L'URL del deployment dello script unico (apps-script/Code.gs). Si imposta una sola volta: viene ricordato su questo dispositivo.</span>
+                <div class="error" id="urlError">L'URL deve iniziare con https://script.google.com/</div>
+            </div>
+        </div>
+
+        <button type="submit" class="primary-wide">Genera link e QR code</button>
+    </form>
+
+    <div id="risultato" class="section">
+        <h2 class="section-title">Link per gli assaggiatori</h2>
+        <div class="link-box" id="linkBox"></div>
+        <div class="buttons">
+            <button type="button" id="copiaBtn">Copia link</button>
+            <button type="button" class="secondary" id="apriBtn">Apri anteprima</button>
+        </div>
+
+        <div class="qr-wrapper">
+            <div class="qr-title" id="qrTitle"></div>
+            <div id="qrcode"></div>
+            <div class="buttons">
+                <button type="button" class="secondary" id="scaricaQrBtn">Scarica QR</button>
+                <button type="button" class="secondary" onclick="window.print()">Stampa QR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Valori predefiniti = scheda attuale di index.html
+    const LOGHI_DISPONIBILI = [
+        { src: 'hbl.png', nome: 'HBL' },
+        { src: 'doppiobaffo.png', nome: 'Doppiobaffo' },
+        { src: 'ubt.png', nome: 'UBT' }
+    ];
+
+    const DEFAULT = {
+        s: '',
+        t: 'Saison Oltrepò Pavese',
+        d: "Prototipo in collaborazione con l'Università degli Studi di Pavia (con cereali del territorio e bargnolino). Valuta il prodotto secondo le tue preferenze.",
+        v: ['Versione A', 'Versione B', 'Versione C', 'Versione D'],
+        l: LOGHI_DISPONIBILI.map(l => l.src),
+        u: ''
+    };
+
+    const CHIAVE_STORAGE = 'impostazioni_degustazione';
+
+    function caricaSalvate() {
+        try {
+            return JSON.parse(localStorage.getItem(CHIAVE_STORAGE) || 'null');
+        } catch (err) {
+            return null;
+        }
+    }
+
+    function salva(cfg) {
+        try {
+            localStorage.setItem(CHIAVE_STORAGE, JSON.stringify(cfg));
+        } catch (err) {
+            // non indispensabile
+        }
+    }
+
+    function righe(testo) {
+        return testo.split('\n').map(r => r.trim()).filter(Boolean);
+    }
+
+    function renderLoghi(selezionati) {
+        const box = document.getElementById('logoChoices');
+        box.innerHTML = '';
+        LOGHI_DISPONIBILI.forEach(logo => {
+            const label = document.createElement('label');
+            label.className = 'logo-choice';
+
+            const img = document.createElement('img');
+            img.src = logo.src;
+            img.alt = logo.nome;
+            img.onerror = () => {
+                const ph = document.createElement('div');
+                ph.className = 'logo-missing';
+                ph.textContent = 'File ' + logo.src + ' non trovato';
+                img.replaceWith(ph);
+            };
+
+            const riga = document.createElement('span');
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.value = logo.src;
+            cb.checked = selezionati.includes(logo.src);
+            riga.appendChild(cb);
+            riga.append(' ' + logo.nome);
+
+            label.appendChild(img);
+            label.appendChild(riga);
+            box.appendChild(label);
+        });
+    }
+
+    function compila(cfg) {
+        document.getElementById('serata').value = cfg.s || '';
+        document.getElementById('titolo').value = cfg.t || '';
+        document.getElementById('descrizione').value = cfg.d || '';
+        document.getElementById('versioni').value = (cfg.v || []).join('\n');
+        document.getElementById('webAppUrl').value = cfg.u || '';
+        const disponibili = LOGHI_DISPONIBILI.map(l => l.src);
+        renderLoghi((cfg.l || []).filter(src => disponibili.includes(src)));
+        document.getElementById('loghiExtra').value = (cfg.l || []).filter(src => !disponibili.includes(src)).join('\n');
+    }
+
+    function leggiForm() {
+        const loghi = Array.from(document.querySelectorAll('#logoChoices input:checked')).map(cb => cb.value);
+        return {
+            s: document.getElementById('serata').value.trim(),
+            t: document.getElementById('titolo').value.trim(),
+            d: document.getElementById('descrizione').value.trim(),
+            v: righe(document.getElementById('versioni').value),
+            l: loghi.concat(righe(document.getElementById('loghiExtra').value)),
+            u: document.getElementById('webAppUrl').value.trim()
+        };
+    }
+
+    // JSON -> UTF-8 -> base64url (stesso formato letto da index.html)
+    function codifica(cfg) {
+        const bytes = new TextEncoder().encode(JSON.stringify(cfg));
+        let bin = '';
+        bytes.forEach(b => { bin += String.fromCharCode(b); });
+        return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    let linkCorrente = '';
+
+    document.getElementById('settingsForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const cfg = leggiForm();
+
+        const urlError = document.getElementById('urlError');
+        if (!cfg.u.startsWith('https://script.google.com/')) {
+            urlError.style.display = 'block';
+            document.getElementById('webAppUrl').focus();
+            return;
+        }
+        urlError.style.display = 'none';
+
+        salva(cfg);
+
+        const url = new URL('index.html', location.href);
+        url.search = '';
+        url.hash = '';
+        url.searchParams.set('c', codifica(cfg));
+        linkCorrente = url.toString();
+
+        document.getElementById('linkBox').textContent = linkCorrente;
+        document.getElementById('qrTitle').textContent = cfg.t || cfg.s;
+
+        const qrBox = document.getElementById('qrcode');
+        qrBox.innerHTML = '';
+        new QRCode(qrBox, {
+            text: linkCorrente,
+            width: 320,
+            height: 320,
+            correctLevel: QRCode.CorrectLevel.L
+        });
+
+        const risultato = document.getElementById('risultato');
+        risultato.style.display = 'block';
+        risultato.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('copiaBtn').addEventListener('click', function () {
+        const btn = this;
+        navigator.clipboard.writeText(linkCorrente).then(() => {
+            btn.textContent = 'Copiato!';
+            setTimeout(() => { btn.textContent = 'Copia link'; }, 1500);
+        }).catch(() => {
+            prompt('Copia il link:', linkCorrente);
+        });
+    });
+
+    document.getElementById('apriBtn').addEventListener('click', function () {
+        window.open(linkCorrente, '_blank');
+    });
+
+    document.getElementById('scaricaQrBtn').addEventListener('click', function () {
+        const canvas = document.querySelector('#qrcode canvas');
+        if (!canvas) return;
+        const a = document.createElement('a');
+        const nome = (document.getElementById('serata').value.trim() || 'degustazione').replace(/[^\w\-]+/g, '_');
+        a.download = `qr_${nome}.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+    });
+
+    compila(Object.assign({}, DEFAULT, caricaSalvate() || {}));
+</script>
+
+</body>
+</html>
